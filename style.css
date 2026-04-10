@@ -1,0 +1,239 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  background: #f0f0eb;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2.5rem 1rem;
+}
+
+article[data-testid="test-todo-card"] {
+  background: #fff;
+  border: 1px solid #e0dfd8;
+  border-radius: 14px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 480px;
+  word-break: break-word;
+  overflow: hidden;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #5340b8;
+}
+
+label[for="complete-toggle"] {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+h2[data-testid="test-todo-title"] {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a18;
+  line-height: 1.45;
+  flex: 1;
+}
+
+/* Strike-through on complete */
+h2[data-testid="test-todo-title"].completed {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+p[data-testid="test-todo-description"] {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* BADGES */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.badge-priority {
+  background: #fde8e0;
+  color: #92330f;
+  border: 1px solid #f5c4aa;
+}
+
+.badge-status {
+  background: #eef1fb;
+  color: #3544a8;
+  border: 1px solid #c4caf5;
+}
+
+.badge-status.done {
+  background: #e4f5e8;
+  color: #1f7a3a;
+  border-color: #a5d9b5;
+}
+
+/* DUE DATE ROW */
+.due-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.due-label {
+  font-weight: 500;
+  color: #444;
+}
+
+time[data-testid="test-todo-due-date"] {
+  font-weight: 600;
+  color: #1a1a18;
+}
+
+.time-chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fffbe6;
+  color: #7a5200;
+  border: 1px solid #f5d98a;
+}
+
+.time-chip.overdue {
+  background: #fdeaea;
+  color: #8c1f1f;
+  border-color: #f0a0a0;
+}
+
+/* TAGS */
+.tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.tags li {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #f0efea;
+  color: #444;
+  border: 1px solid #ddd;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button[data-testid="test-todo-edit-button"] {
+  background: #f5f5f0;
+  color: #333;
+}
+
+button[data-testid="test-todo-edit-button"]:hover {
+  background: #eaeae4;
+}
+
+button[data-testid="test-todo-delete-button"] {
+  background: #fff0f0;
+  color: #8c1f1f;
+  border-color: #f5bfbf;
+}
+
+button[data-testid="test-todo-delete-button"]:hover {
+  background: #fde0e0;
+}
+
+/* FOCUS STYLES */
+input[type="checkbox"]:focus-visible,
+button:focus-visible {
+  outline: 2px solid #5340b8;
+  outline-offset: 3px;
+}
+
+/* RESPONSIVE — Mobile: full-width, stacked */
+@media (max-width: 500px) {
+  body {
+    padding: 0;
+    background: #fff;
+  }
+
+  article[data-testid="test-todo-card"] {
+    max-width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    min-height: 100vh;
+    padding: 1.25rem 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* RESPONSIVE — Tablet/Desktop: 420–500px max-width */
+@media (min-width: 501px) {
+  article[data-testid="test-todo-card"] {
+    max-width: 480px;
+  }
+}
