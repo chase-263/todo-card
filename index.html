@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Todo Item Card</title>
+  <title>Todo Item Card — Stage 1a</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,83 +14,225 @@
       data-testid="test-todo-card"
       role="region"
       aria-labelledby="todo-title"
+      id="todo-card"
     >
 
-    <!-- CHECKBOX + TITLE -->
-      <div class="card-top">
-        <input
-          type="checkbox"
-          id="complete-toggle"
-          data-testid="test-todo-complete-toggle"
-          aria-label="Mark task as complete"
-          onchange="handleToggle(this)"
-        />
-        <label for="complete-toggle">Done</label>
-        <h2
-          data-testid="test-todo-title"
-          id="todo-title"
+      <!-- PRIORITY INDICATOR -->
+      <div
+        data-testid="test-todo-priority-indicator"
+        class="priority-indicator"
+        id="priority-indicator"
+        aria-label="Priority: High"
+      ></div>
+
+      <!-- == VIEW MODE == -->
+      <div class="view-mode" id="view-mode">
+
+        <!-- ROW 1: Checkbox + Title -->
+        <div class="card-top">
+          <input
+            type="checkbox"
+            id="complete-toggle"
+            data-testid="test-todo-complete-toggle"
+            aria-label="Mark task as complete"
+            onchange="handleToggle(this)"
+          />
+          <label for="complete-toggle">Done</label>
+          <h2
+            data-testid="test-todo-title"
+            id="todo-title"
+          >Build a Testable Todo Item Card</h2>
+        </div>
+
+        <!-- ROW 2: Status control (dropdown) -->
+        <div class="status-row">
+          <label for="status-control" class="field-label">Status:</label>
+          <select
+            id="status-control"
+            data-testid="test-todo-status-control"
+            aria-label="Task status"
+            onchange="handleStatusChange(this)"
+          >
+            <option value="Pending">Pending</option>
+            <option value="In Progress" selected>In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+
+          <!-- Status display badge (stays in sync) -->
+          <span
+            data-testid="test-todo-status"
+            id="status-badge"
+            class="badge badge-status"
+            aria-label="Status: In Progress"
+          >In Progress</span>
+        </div>
+
+        <!-- ROW 3: Priority badge -->
+        <div class="badges-row">
+          <span
+            data-testid="test-todo-priority"
+            id="priority-badge"
+            class="badge badge-priority high"
+            aria-label="Priority: High"
+          >High</span>
+        </div>
+
+        <!-- ROW 4: Description + expand/collapse -->
+        <div class="description-section">
+          <button
+            data-testid="test-todo-expand-toggle"
+            id="expand-toggle"
+            class="expand-btn"
+            aria-expanded="false"
+            aria-controls="collapsible-section"
+            onclick="toggleExpand()"
+          >Show description</button>
+
+          <div
+            data-testid="test-todo-collapsible-section"
+            id="collapsible-section"
+            class="collapsible collapsed"
+          >
+            <p
+              data-testid="test-todo-description"
+              id="todo-description"
+            >Create a clean, modern Todo / Task Card component with all required
+            data-testid attributes, semantic HTML, accessibility features,
+            and a responsive layout from 320px to 1200px.</p>
+          </div>
+        </div>
+
+        <!-- ROW 5: Due date + time remaining + overdue indicator -->
+        <div class="due-row">
+          <span class="due-label">Due:</span>
+          <time
+            data-testid="test-todo-due-date"
+            id="todo-due-date"
+            datetime="2026-04-16T18:00:00Z"
+          >Apr 16, 2026</time>
+          <span
+            data-testid="test-todo-time-remaining"
+            id="time-remaining"
+            class="time-chip"
+            aria-live="polite"
+            aria-label="Time remaining"
+          >Calculating...</span>
+          <!-- Overdue indicator — hidden until overdue -->
+          <span
+            data-testid="test-todo-overdue-indicator"
+            id="overdue-indicator"
+            class="overdue-indicator hidden"
+            aria-label="Task is overdue"
+          >Overdue</span>
+        </div>
+
+        <!-- ROW 6: Tags -->
+        <ul
+          data-testid="test-todo-tags"
+          role="list"
+          aria-label="Task tags"
+          class="tags"
         >
-          Testable Todo Item Card
-        </h2>
+          <li role="listitem" data-testid="test-todo-tag-work">work</li>
+          <li role="listitem" data-testid="test-todo-tag-urgent">urgent</li>
+          <li role="listitem" data-testid="test-todo-tag-design">design</li>
+        </ul>
+
+        <!-- ROW 7: Edit & Delete buttons -->
+        <div class="actions">
+          <button
+            data-testid="test-todo-edit-button"
+            id="edit-btn"
+            aria-label="Edit task"
+            onclick="enterEditMode()"
+          >Edit</button>
+          <button
+            data-testid="test-todo-delete-button"
+            aria-label="Delete task"
+            onclick="alert('Delete clicked')"
+          >Delete</button>
+        </div>
+
       </div>
 
-      <!-- DESCRIPTION -->
-      <p data-testid="test-todo-description">
-         Task Card component
-      </p>
 
-       <!-- PRIORITY + STATUS -->
-      <div class="badges">
-        <span
-          data-testid="test-todo-priority"
-          class="badge badge-priority"
-          aria-label="Priority: High"
-        >High</span>
+      <!-- ===== EDIT MODE ===== -->
+      <div
+        data-testid="test-todo-edit-form"
+        id="edit-mode"
+        class="edit-mode hidden"
+        role="form"
+        aria-label="Edit task form"
+      >
+        <h3 class="edit-heading">Edit Task</h3>
 
-         <span
-          data-testid="test-todo-status"
-          class="badge badge-status"
-          id="status-badge"
-          aria-label="Status: In Progress"
-        >In Progress</span>
+        <!-- Title input -->
+        <div class="field-group">
+          <label for="edit-title-input" class="field-label">Title</label>
+          <input
+            type="text"
+            id="edit-title-input"
+            data-testid="test-todo-edit-title-input"
+            class="edit-input"
+            placeholder="Task title"
+          />
+        </div>
+
+        <!-- Description textarea -->
+        <div class="field-group">
+          <label for="edit-description-input" class="field-label">Description</label>
+          <textarea
+            id="edit-description-input"
+            data-testid="test-todo-edit-description-input"
+            class="edit-textarea"
+            rows="3"
+            placeholder="Task description"
+          ></textarea>
+        </div>
+
+        <!-- Priority select -->
+        <div class="field-group">
+          <label for="edit-priority-select" class="field-label">Priority</label>
+          <select
+            id="edit-priority-select"
+            data-testid="test-todo-edit-priority-select"
+            class="edit-select"
+          >
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High" selected>High</option>
+          </select>
+        </div>
+
+        <!-- Due date input -->
+        <div class="field-group">
+          <label for="edit-due-date-input" class="field-label">Due Date</label>
+          <input
+            type="date"
+            id="edit-due-date-input"
+            data-testid="test-todo-edit-due-date-input"
+            class="edit-input"
+          />
+        </div>
+
+        <!-- Save & Cancel buttons -->
+        <div class="edit-actions">
+          <button
+            data-testid="test-todo-save-button"
+            class="btn-save"
+            aria-label="Save changes"
+            onclick="saveEdit()"
+          >Save</button>
+          <button
+            data-testid="test-todo-cancel-button"
+            class="btn-cancel"
+            aria-label="Cancel editing"
+            onclick="cancelEdit()"
+          >Cancel</button>
+        </div>
+
       </div>
-
-       <div class="due-row">
-        <span class="due-label">Due:</span>
-        <time
-          data-testid="test-todo-due-date"
-          datetime="2026-04-16T18:00:00Z"
-        >Apr 16, 2026</time>
-
-         <span
-          data-testid="test-todo-time-remaining"
-          class="time-chip"
-          id="time-remaining"
-          aria-live="polite"
-          aria-label="Time remaining"
-        >Calculating...</span>
-      </div>
-
-      <!-- TAGS -->
-      <ul data-testid="test-todo-tags" role="list" aria-label="Task tags" class="tags">
-  <li role="listitem" data-testid="test-todo-tag-work">work</li>
-  <li role="listitem" data-testid="test-todo-tag-urgent">urgent</li>
-  <li role="listitem" data-testid="test-todo-tag-design">design</li>
-</ul>
-
-       <div class="actions">
-        <button
-          data-testid="test-todo-edit-button"
-          aria-label="Edit task"
-          onclick="console.log('edit clicked')"
-        >Edit</button>
-
-        <button
-          data-testid="test-todo-delete-button"
-          aria-label="Delete task"
-          onclick="alert('Delete clicked')"
-        >Delete</button>
-      </div>
+      <!-- end edit-mode -->
 
     </article>
 
